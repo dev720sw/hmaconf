@@ -1,0 +1,136 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./main.css">
+</head>
+<body>
+    <div class="w-full max-w-96 mx-auto p-4">
+    <form id="predictionForm" method="POST">
+        <input type="hidden" name="Content-Type" value="application/json">
+        <div class="flex flex-col">
+            <select id="codeGender" name="codeGender" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Gender</option>
+                <option value="M">Male</option>
+                <option value="F">Female</option>
+                <option value="O">Other</option>
+            </select>
+        </div>
+        <div class="flex flex-col mt-3">
+            <select id="flagOwnCar" name="flagOwnCar" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Own Car?</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="flex flex-col mt-3">
+            <select id="flagOwnRealty" name="flagOwnRealty" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Own Realty?</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="flex flex-col mt-3">
+            <input type="number" id="amtIncomeTotal" name="amtIncomeTotal" class="border border-gray-300 rounded-md p-2" placeholder="Income Total">
+        </div>
+        <div class="flex flex-col mt-3">
+            <select id="nameIncomeType" name="nameIncomeType" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Income Type</option>
+                <option value="working">Working</option>
+                <option value="pensioner">Pensioner</option>
+                <option value="student">Student</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="self-employed">Self-employed</option>
+            </select>
+        </div>
+        <div class="flex flex-col mt-3">
+            <select id="nameEducationType" name="nameEducationType" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Education Type</option>
+                <option value="primary">Primary</option>
+                <option value="secondary">Secondary</option>
+                <option value="tertiary">Tertiary</option>
+                <option value="vocational">Vocational</option>
+                <option value="higher">Higher</option>
+            </select>
+        </div>
+        <div class="flex flex-col mt-3">
+            <select id="nameFamilyStatus" name="nameFamilyStatus" class="border border-gray-300 rounded-md p-2">
+                <option value="" selected disabled hidden>Family Status</option>
+                <option value="single">Single</option>
+                <option value="married">Married</option>
+                <option value="divorced">Divorced</option>
+                <option value="widowed">Widowed</option>
+            </select>
+        </div>
+        <div class="flex flex-col">
+            <select id="nameHousingType" name="nameHousingType" class="border border-gray-300 rounded-md p-2 mt-5">
+                <option value="" selected disabled hidden>Housing Type</option>
+                <option value="rented">Rented</option>
+                <option value="owned">Owned</option>
+                <option value="mortgaged">Mortgaged</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <div class="flex flex-col">
+            <select id="employed" name="employed" class="border border-gray-300 rounded-md p-2 mt-5">
+                <option value="" selected disabled hidden>Employed?</option>
+                <option value="Yes">Yes</option>
+                <option value="No">No</option>
+            </select>
+        </div>
+        <div class="flex flex-col">
+            <select id="occupationType" name="occupationType" class="border border-gray-300 rounded-md p-2 mt-5">
+                <option value="" selected disabled hidden>Occupation Type</option>
+                <option value="employed">Employed</option>
+                <option value="self-employed">Self-employed</option>
+                <option value="unemployed">Unemployed</option>
+                <option value="student">Student</option>
+                <option value="retired">Retired</option>
+                <option value="other">Other</option>
+            </select>
+        </div>
+        <button type="submit" class="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded mt-5">Submit</button>
+    </form>
+    <!-- ... -->
+  </div>
+  <script>
+    // Get the form element
+    const form = document.getElementById('predictionForm');
+
+    // Add event listener for form submission
+    form.addEventListener('submit', function(event) {
+        event.preventDefault(); // Prevent the default form submission
+
+        // Create a new FormData object
+        const formData = new FormData(form);
+
+        // Log the form data
+        console.log(Object.fromEntries(formData.entries()));
+
+        // Create a new XMLHttpRequest object
+        const xhr = new XMLHttpRequest();
+
+        // Set the request method and URL
+        xhr.open('POST', 'http://localhost:8000/predict');
+
+        // Set the request headers
+        xhr.setRequestHeader('Content-Type', 'application/json');
+
+        // Set the onload callback function
+        xhr.onload = function() {
+            if (xhr.status === 200) {
+                // Request was successful
+                console.log(xhr.responseText);
+            } else {
+                // Request failed
+                console.error('Request failed. Status:', xhr.status);
+            }
+        };
+
+        // Send the request with the form data
+        xhr.send(JSON.stringify(Object.fromEntries(formData.entries())));
+    });
+</script>
+</body>
+</html>
